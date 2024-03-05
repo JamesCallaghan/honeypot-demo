@@ -1,0 +1,9 @@
+flowchart TD
+    A[Access sensitive \ninfo on node] --> |*kubectl logs BAD_POD*| B{Escape from \ncontainer \non node}
+    A --> more1[. . . . . . . .]
+    B -->|*container can run as root*| C[Dangerous Security Context]
+    B --> |*writeable hostPath to /var/log*| D{Pod created \nwith PVC referencing \nhostPath PV}
+    D --> E[Credentials] 
+    D --> |*pod can create Pods/PVs/PVCs*| F[Misconfigured RBAC]
+    E --> |*leaked creds used*| G[Initial access to \npod in cluster]
+    E --> more2[. . . . . . . .]
